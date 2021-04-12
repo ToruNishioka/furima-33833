@@ -4,7 +4,7 @@
 
 | Column             | Type    | Option                    |
 | ------------------ | ------- | ------------------------- |
-| nickname           | string  | null: false, unique: true |
+| nickname           | string  | null: false               |
 | email              | string  | null: false, unique: true |
 | encrypted_password | string  | null: false               |
 | last_name          | string  | null: false               |
@@ -17,7 +17,6 @@
 
 - has_many :items
 - has_many :purchases
-- has_one  :shipping_address
 
 ## itemsテーブル
 
@@ -43,7 +42,7 @@
 | Column  | Type       | Option                         |
 | ------- | ---------- | ------------------------------ |
 | user    | references | null: false, foreign_key: true |
-| item_id | references | null: false, foreign_key: true |
+| item    | references | null: false, foreign_key: true |
 
 ### Association
 
@@ -56,7 +55,7 @@
 | Column        | Type       | Option                         |
 | ------------- | ---------- | ------------------------------ |
 | postal_code   | string     | null: false                    |
-| prefecture_id | integer    | null: false                    |
+| area_id       | integer    | null: false                    |
 | city          | string     | null: false                    |
 | house_number  | string     | null: false                    |
 | building_name | string     |                                |
@@ -66,4 +65,3 @@
 ### Association
 
 - belongs_to :purchase
-- belongs_to :user
