@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
     @user = FactoryBot.build(:user)
   end
 
-  describe 'ユーザー新規登録' do
+  describe 'ユーザー新規登録がうまくいかない時' do
     it 'nicknameが空だと登録できない' do
       @user.nickname = ''
       @user.valid?
@@ -41,13 +41,19 @@ RSpec.describe User, type: :model do
       @user.password = '000000'
       @user.password_confirmation = '000000'
       @user.valid?
-      expect(@user.errors[:password]).to include 'には英字と数字の両方を含めて設定してください'
+      expect(@user.errors[:password]).to include 'には半角英字と半角数字の両方を含めて設定してください'
     end
     it 'passwordは半角英字のみでは登録できない' do
       @user.password = 'aaaaaa'
       @user.password_confirmation = 'aaaaaa'
       @user.valid?
-      expect(@user.errors[:password]).to include 'には英字と数字の両方を含めて設定してください'
+      expect(@user.errors[:password]).to include 'には半角英字と半角数字の両方を含めて設定してください'
+    end
+    it 'passwordは全角英字では登録できない' do
+      @user.password = 'AAAAAA'
+      @user.password_confirmation = 'AAAAAA'
+      @user.valid?
+      expect(@user.errors[:password]).to include 'には半角英字と半角数字の両方を含めて設定してください'
     end
     it 'passwordは確認用を含め2回入力が必要' do
       @user.password_confirmation = ''
@@ -70,10 +76,15 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include "First name can't be blank"
     end
-    it 'ユーザー本名は全角（漢字・ひらがな・カタカナ）での入力が必須である' do
+    it 'ユーザー本名の名字は全角（漢字・ひらがな・カタカナ）での入力が必須である' do
       @user.last_name = 'hoge'
       @user.valid?
       expect(@user.errors.full_messages).to include 'Last name には全角文字を使用してください'
+    end
+    it 'ユーザー本名の名前は全角（漢字・ひらがな・カタカナ）での入力が必須である' do
+      @user.first_name = 'huge'
+      @user.valid?
+      expect(@user.errors.full_messages).to include 'First name には全角文字を使用してください'
     end
     it 'ユーザー本名のフリガナは、名字が必須である' do
       @user.last_name_k = ''
@@ -100,8 +111,9 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include "Birthday can't be blank"
     end
-    
-    # ユーザー新規登録の正常系テスト
+  end
+
+  context 'ユーザー新規登録がうまくいく時' do
     it 'nicknameが存在すれば登録できる' do
       @user.nickname = "test"
       expect(@user).to be_valid
