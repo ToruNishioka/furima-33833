@@ -93,17 +93,17 @@ RSpec.describe Item, type: :model do
       it '販売価格が全角数字だと出品できない' do
         @item.price = '５００'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not included in the list"
+        expect(@item.errors.full_messages).to include 'Price is not included in the list'
       end
       it '販売価格が¥300未満では出品できない' do
         @item.price = 200
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not included in the list"
+        expect(@item.errors.full_messages).to include 'Price is not included in the list'
       end
       it '販売価格が¥9,999,999以上だと出品できない' do
-        @item.price = 10000000
+        @item.price = 10_000_000
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not included in the list"
+        expect(@item.errors.full_messages).to include 'Price is not included in the list'
       end
     end
   end

@@ -115,7 +115,7 @@ RSpec.describe User, type: :model do
 
   context 'ユーザー新規登録がうまくいく時' do
     it 'nicknameが存在すれば登録できる' do
-      @user.nickname = "test"
+      @user.nickname = 'test'
       expect(@user).to be_valid
     end
     it 'emailが存在すれば登録できる' do
