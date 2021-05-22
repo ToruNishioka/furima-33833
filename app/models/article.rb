@@ -1,10 +1,6 @@
 class Article < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
-  belongs_to :category
-  belongs_to :status
-  belongs_to :delivery_charge
-  belongs_to :area
-  belongs_to :days_to_ship
+  has_many :item
 
   with_options presence: true do
     validates :image
@@ -17,9 +13,4 @@ class Article < ApplicationRecord
     validates :days_to_ship_id
     validates :price
   end
-
-  validates :category_id, numericality: { other_than: 1 }
-  validates :atatus_id, numericality: { other_than: 1 }
-  validates :area_id, numericality: { other_than: 1 }
-  validates :days_to_ship_id, numericality: { other_than: 1 }
 end
