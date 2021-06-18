@@ -1,9 +1,12 @@
 class PurchasesController < ApplicationController
   before_action :sold_out_item, only: [:index]
+  before_action :move_to_signed_in
 
   def index
     @item = Item.find(params[:item_id])
+    redirect_to root_path if @item.purchase.present?
     @purchase_address = PurchaseAddress.new
+    redirect_to root_path if current_user.id == @item.user_id
   end
 
   def create
@@ -21,7 +24,7 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase_address).permit(:postal_code, :area_id, :city, :house_number, :building_name, :phone_number, :number, :exp_month, :exp_year, :cvc).merge(
+    params.require(:purchase_address).permit(:postal_code, :area_id, :city, :house_number, :building_name, :phone_number).merge(
       user_id: current_user.id, item_id: params[:item_id], token: params[:token]
     )
   end
@@ -37,5 +40,9 @@ class PurchasesController < ApplicationController
 
   def sold_out_item
     redirect_to root_path if @item.present?
+  end
+
+  def move_to_signed_in
+    redirect_to new_user_session_path unless user_signed_in?
   end
 end
