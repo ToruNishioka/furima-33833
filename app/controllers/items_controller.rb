@@ -34,10 +34,8 @@ class ItemsController < ApplicationController
     end
   end
 
-  def destroy 
-    if @item.destroy
-      redirect_to root_path
-    end
+  def destroy
+    redirect_to root_path if @item.destroy
   end
 
   private
@@ -52,14 +50,10 @@ class ItemsController < ApplicationController
   end
 
   def move_to_signed_in
-    unless user_signed_in?
-      redirect_to new_user_session_path
-    end
+    redirect_to new_user_session_path unless user_signed_in?
   end
 
   def move_to_index
-    if @item.user != current_user 
-    redirect_to root_path 
-    end
+    redirect_to root_path if @item.user != current_user
   end
 end
