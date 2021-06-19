@@ -7,28 +7,11 @@ RSpec.describe PurchaseAddress, type: :model do
 
   describe '商品購入機能の実装' do
     context '商品購入がうまくいくとき' do
-      it '郵便番号があると購入できる' do
-        @purchase_address.postal_code
+      it '正しい値が全て記述されている場合購入できる' do
         expect(@purchase_address).to be_valid
       end
-      it '都道府県があると購入できる' do
-        @purchase_address.area_id
-        expect(@purchase_address).to be_valid
-      end
-      it '市区町村があると購入できる' do
-        @purchase_address.city
-        expect(@purchase_address).to be_valid
-      end
-      it '番地があると購入できる' do
-        @purchase_address.house_number
-        expect(@purchase_address).to be_valid
-      end
-      it '電話番号があると購入できる' do
-        @purchase_address.phone_number
-        expect(@purchase_address).to be_valid
-      end
-      it 'tokenがあれば保存ができる' do
-        @purchase_address.token
+      it '建物番号が空の場合でも購入できる' do
+        @purchase_address.building_name
         expect(@purchase_address).to be_valid
       end
     end
@@ -74,10 +57,25 @@ RSpec.describe PurchaseAddress, type: :model do
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include 'Phone number is invalid'
       end
+      it '電話番号に英数混合の値が入力された場合購入できない' do
+        @purchase_address.phone_number = '0801234567a'
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include 'Phone number is invalid'
+      end
       it '電話番号は半角数字でないと購入できない' do
         @purchase_address.phone_number = '０８０１２３４５６７８'
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include 'Phone number is invalid'
+      end
+      it 'user_idがnilだった場合購入できない' do
+        @purchase_address.user_id = nil
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include "User can't be blank"
+      end
+      it 'item_idがnilだった場合購入できない' do
+        @purchase_address.item_id = nil
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include "Item can't be blank"
       end
       it 'tokenが空では登録できないこと' do
         @purchase_address.token = nil
