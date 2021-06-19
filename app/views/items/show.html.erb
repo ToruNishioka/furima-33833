@@ -24,7 +24,7 @@
       <span class="item-postage">
         <%= @item.delivery_charge.name %>
       </span>
-      <% unless @item.purchase.present? %>
+      <% if @item.purchase.nil? %>
         <% if user_signed_in? %>
           <% if current_user.id == @item.user_id %>
             <%= link_to "商品の編集", edit_item_path(@item.id), method: :get, class: "item-red-btn" %>

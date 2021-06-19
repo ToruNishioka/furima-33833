@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe PurchaseAddress, type: :model do
   before do
-    user_id = FactoryBot.create
-    item_id = FactoryBot.create
-    @purchase_address = FactoryBot.build(:purchase_address, user_id: user_id, item_id: item_id)
+    # user = FactoryBot.create(:user) factoriesのitemでuserとアソシエーションを組んでいるので不要
+    item = FactoryBot.create(:item)
+    @purchase_address = FactoryBot.build(:purchase_address, user_id: item.user.id, item_id: item.id)
+    sleep 2
   end
 
   describe '商品購入機能の実装' do
