@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe PurchaseAddress, type: :model do
   before do
-    # user = FactoryBot.create(:user) factoriesのitems.rbでuserとアソシエーションを組んでいるので不要
+    user = FactoryBot.create(:user)
     item = FactoryBot.create(:item)
-    @purchase_address = FactoryBot.build(:purchase_address, user_id: item.user.id, item_id: item.id)
+    @purchase_address = FactoryBot.build(:purchase_address, user_id: user.id, item_id: item.id)
     sleep 2
   end
 
