@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe PurchaseAddress, type: :model do
   before do
-    @purchase_address = FactoryBot.build(:purchase_address)
+    user_id = FactoryBot.create
+    item_id = FactoryBot.create
+    @purchase_address = FactoryBot.build(:purchase_address, user_id: user_id, item_id: item_id)
   end
 
   describe '商品購入機能の実装' do
